@@ -8,13 +8,26 @@ namespace SlotMachine
 {
     class SlotMachine
     {
-        public int NumberOfSlots { get; set; }
+
 
         public int IconsPerSlot { get; set; }
         public int MinimumBet { get; set; }
         public int MaximumBet { get; set; }
 
-
+        private int _numberOfSlots;
+        public int NumberOfSlots
+        {
+            get
+            {
+                return _numberOfSlots;
+            }
+            set
+            {
+                _numberOfSlots = value;
+                icons = new int[_numberOfSlots];
+            }
+        }
+        private Random randomNumberGenerator;
         private int _currentBet;
         public int CurrentBet
         {
@@ -25,6 +38,7 @@ namespace SlotMachine
             set
             {
                 _currentBet = value;
+
                 if (_currentBet < MinimumBet)
                 {
                     _currentBet = MinimumBet;
@@ -49,7 +63,10 @@ namespace SlotMachine
             IconsPerSlot = 5;
             MinimumBet = 1;
             MaximumBet = 100;
+
+            randomNumberGenerator = new Random();
         }
+
 
         /// <summary>
         /// Randomizes the contents of the icons
@@ -57,12 +74,11 @@ namespace SlotMachine
         public void PullLever()
         {
             // TODO
-            icons = new int[NumberOfSlots];
-            Random random = new Random();
 
-            for (int i = 0; i < NumberOfSlots; i++)
+
+            for (int i = 0; i < icons.Length; i++)
             {
-                icons[i] = random.Next(IconsPerSlot) + 1;
+                icons[i] = randomNumberGenerator.Next(IconsPerSlot) + 1;
             }
 
         }
@@ -88,7 +104,7 @@ namespace SlotMachine
             bool matches = false;
             int tempMatchingNumber = icons[0];
 
-            for (int i = 1; i < NumberOfSlots; i++)
+            for (int i = 1; i < icons.Length; i++)
             {
                 if (icons[i] != tempMatchingNumber)
                 {
